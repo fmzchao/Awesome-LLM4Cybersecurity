@@ -1,0 +1,349 @@
+classification_prompts:
+  system_prompt: |
+    你是一个专业的学术论文分类专家，专门负责将网络安全与大语言模型(LLM)相关的论文进行准确分类。
+    你需要根据论文的标题、摘要和关键词，将其分类到最合适的类别中。
+    请仔细分析论文内容，确保分类的准确性。
+
+  base_prompt_template: |
+    请将以下论文分类到最合适的类别中：
+
+    论文标题: {title}
+    论文摘要: {abstract}
+    发表venue: {venue}
+    关键词: {keywords}
+
+    可选分类及其详细描述:
+    {categories_description}
+
+    请返回JSON格式的结果:
+    {{
+        "category": "主分类ID (rq1/rq2/rq3)",
+        "subcategory": "子分类名称",
+        "confidence": 0.8,
+        "reasoning": "详细的分类理由，说明为什么选择这个分类"
+    }}
+
+  categories:
+    rq1:
+      name: "RQ1: How to construct cybersecurity-oriented domain LLMs?"
+      description: "关于如何构建面向网络安全的领域专用大语言模型的研究"
+      
+      subcategories:
+        "Cybersecurity Evaluation Benchmarks":
+          description: |
+            专门用于评估大语言模型在网络安全领域能力的基准测试、数据集和评估框架。
+            这类研究主要关注：
+            - 创建网络安全相关的测试数据集
+            - 设计评估LLM安全知识的基准
+            - 建立衡量模型性能的标准和指标
+            - CTF、渗透测试等安全技能评估
+          keywords:
+            - "benchmark"
+            - "evaluation"
+            - "dataset"
+            - "testing"
+            - "assessment"
+            - "CTF"
+            - "cybersecurity evaluation"
+            - "security benchmark"
+            - "vulnerability dataset"
+            - "penetration testing evaluation"
+          examples:
+            - "创建网络安全问答数据集"
+            - "LLM网络安全能力评估基准"
+            - "漏洞检测数据集构建"
+
+        "Fine-tuned Domain LLMs for Cybersecurity":
+          description: |
+            专门针对网络安全领域进行微调、训练或优化的大语言模型研究。
+            这类研究主要关注：
+            - 在网络安全数据上微调预训练模型
+            - 构建专门的网络安全领域模型
+            - 参数高效的微调方法
+            - 指令调优和安全代码生成优化
+          keywords:
+            - "fine-tuning"
+            - "domain-specific"
+            - "training"
+            - "instruction tuning"
+            - "parameter-efficient"
+            - "cybersecurity LLM"
+            - "security model"
+            - "domain adaptation"
+            - "specialized model"
+          examples:
+            - "网络安全领域的LLM微调"
+            - "安全代码生成模型训练"
+            - "网络安全指令调优"
+
+    rq2:
+      name: "RQ2: What are the potential applications of LLMs in cybersecurity?"
+      description: "关于大语言模型在网络安全中的具体应用场景和实践"
+      
+      subcategories:
+        "Threat Intelligence":
+          description: |
+            利用大语言模型进行威胁情报分析、收集、处理和生成的研究。
+            这类研究主要关注：
+            - 自动化威胁情报收集和分析
+            - 网络攻击归因和溯源
+            - 威胁报告自动生成
+            - 恶意软件分析和分类
+            - 攻击技术和策略(TTP)分析
+          keywords:
+            - "threat intelligence"
+            - "CTI"
+            - "threat analysis"
+            - "malware analysis"
+            - "attack attribution"
+            - "TTP analysis"
+            - "threat hunting"
+            - "intelligence automation"
+            - "cyber threat"
+            - "threat report"
+          examples:
+            - "基于LLM的威胁情报自动分析"
+            - "恶意软件家族分类"
+            - "网络攻击归因分析"
+
+        "FUZZ":
+          description: |
+            使用大语言模型进行模糊测试、漏洞挖掘和安全测试的研究。
+            这类研究主要关注：
+            - LLM辅助的模糊测试用例生成
+            - 智能化测试输入构造
+            - 协议模糊测试
+            - API和接口安全测试
+            - 测试覆盖率优化
+          keywords:
+            - "fuzzing"
+            - "fuzz testing"
+            - "test case generation"
+            - "vulnerability discovery"
+            - "security testing"
+            - "mutation testing"
+            - "protocol fuzzing"
+            - "API testing"
+            - "automated testing"
+            - "test input generation"
+          examples:
+            - "LLM生成模糊测试用例"
+            - "协议模糊测试自动化"
+            - "API安全测试工具"
+
+        "Vulnerabilities Detection":
+          description: |
+            利用大语言模型检测代码漏洞、安全缺陷和系统脆弱性的研究。
+            这类研究主要关注：
+            - 源代码漏洞自动检测
+            - 智能合约安全分析
+            - 二进制代码漏洞发现
+            - 配置错误检测
+            - 多语言漏洞检测
+          keywords:
+            - "vulnerability detection"
+            - "security analysis"
+            - "code analysis"
+            - "static analysis"
+            - "smart contract security"
+            - "binary analysis"
+            - "security vulnerability"
+            - "code vulnerability"
+            - "security flaw"
+            - "weakness detection"
+          examples:
+            - "基于LLM的代码漏洞检测"
+            - "智能合约安全分析"
+            - "二进制漏洞发现"
+
+        "Insecure code Generation":
+          description: |
+            研究大语言模型生成不安全代码的问题，以及如何提高代码生成的安全性。
+            这类研究主要关注：
+            - 分析LLM生成代码的安全问题
+            - 评估代码生成的安全风险
+            - 提高生成代码的安全性
+            - 安全编码实践集成
+            - 恶意代码生成防护
+          keywords:
+            - "insecure code"
+            - "code generation security"
+            - "secure coding"
+            - "malicious code"
+            - "code safety"
+            - "security risk"
+            - "vulnerable code"
+            - "code security assessment"
+            - "safe code generation"
+          examples:
+            - "LLM生成代码的安全性评估"
+            - "防止恶意代码生成"
+            - "安全代码生成方法"
+
+        "Program Repair":
+          description: |
+            使用大语言模型自动修复程序缺陷、安全漏洞和代码错误的研究。
+            这类研究主要关注：
+            - 自动化漏洞修复
+            - 代码缺陷自动修补
+            - 安全补丁生成
+            - 程序自动调试
+            - 代码重构和优化
+          keywords:
+            - "program repair"
+            - "bug fixing"
+            - "patch generation"
+            - "vulnerability repair"
+            - "automatic repair"
+            - "code fixing"
+            - "security patch"
+            - "automated patching"
+            - "defect repair"
+            - "code correction"
+          examples:
+            - "基于LLM的自动漏洞修复"
+            - "智能代码修补工具"
+            - "安全补丁自动生成"
+
+        "Anomaly Detection":
+          description: |
+            利用大语言模型进行异常检测、入侵检测和安全监控的研究。
+            这类研究主要关注：
+            - 网络异常流量检测
+            - 系统日志异常分析
+            - 用户行为异常识别
+            - 恶意软件行为检测
+            - 钓鱼邮件识别
+          keywords:
+            - "anomaly detection"
+            - "intrusion detection"
+            - "log analysis"
+            - "network monitoring"
+            - "behavioral analysis"
+            - "phishing detection"
+            - "malware detection"
+            - "security monitoring"
+            - "outlier detection"
+            - "abnormal behavior"
+          examples:
+            - "基于LLM的日志异常检测"
+            - "网络入侵检测系统"
+            - "钓鱼邮件智能识别"
+
+        "LLM Assisted Attack":
+          description: |
+            研究利用大语言模型进行网络攻击、渗透测试和攻击自动化的相关工作。
+            这类研究主要关注：
+            - LLM辅助的渗透测试
+            - 自动化攻击工具开发
+            - 社会工程学攻击
+            - 恶意代码生成
+            - 攻击策略规划
+          keywords:
+            - "penetration testing"
+            - "attack simulation"
+            - "exploit generation"
+            - "automated attack"
+            - "social engineering"
+            - "malicious use"
+            - "cyber attack"
+            - "hacking"
+            - "offensive security"
+            - "attack automation"
+          examples:
+            - "LLM辅助渗透测试工具"
+            - "自动化网络攻击"
+            - "智能社会工程学攻击"
+
+        "Others":
+          description: |
+            其他不属于上述具体分类但与LLM在网络安全应用相关的研究。
+            包括但不限于：
+            - 网络安全教育和培训
+            - 安全运维自动化
+            - 合规性检查
+            - 风险评估
+            - 安全可视化
+          keywords:
+            - "cybersecurity education"
+            - "security operations"
+            - "compliance checking"
+            - "risk assessment"
+            - "security visualization"
+            - "incident response"
+            - "security automation"
+            - "digital forensics"
+          examples:
+            - "网络安全教育平台"
+            - "安全运维自动化"
+            - "数字取证分析"
+
+    rq3:
+      name: "RQ3: What are further research directions about the application of LLMs in cybersecurity?"
+      description: "关于LLM在网络安全应用中的进一步研究方向和未来趋势"
+      
+      subcategories:
+        "Further Research: Agent4Cybersecurity":
+          description: |
+            关于智能体(Agent)在网络安全领域应用的前沿研究方向。
+            这类研究主要关注：
+            - 多智能体协作安全系统
+            - 自主安全决策智能体
+            - 智能体驱动的安全防护
+            - 对抗性智能体研究
+            - 智能体安全框架设计
+          keywords:
+            - "agent"
+            - "multi-agent"
+            - "autonomous"
+            - "intelligent agent"
+            - "agent-based security"
+            - "cooperative agents"
+            - "security agents"
+            - "autonomous defense"
+            - "agent framework"
+            - "AI agent"
+          examples:
+            - "多智能体网络防护系统"
+            - "自主安全决策智能体"
+            - "智能体协作入侵检测"
+
+# 分类置信度阈值配置
+confidence_thresholds:
+  high_confidence: 0.8    # 高置信度阈值
+  medium_confidence: 0.6  # 中等置信度阈值
+  low_confidence: 0.4     # 低置信度阈值
+
+# 特殊情况处理规则
+special_rules:
+  # 如果标题或摘要中包含这些关键词，优先考虑对应分类
+  priority_keywords:
+    "benchmark": "Cybersecurity Evaluation Benchmarks"
+    "dataset": "Cybersecurity Evaluation Benchmarks"
+    "fine-tun": "Fine-tuned Domain LLMs for Cybersecurity"
+    "training": "Fine-tuned Domain LLMs for Cybersecurity"
+    "threat intelligence": "Threat Intelligence"
+    "fuzzing": "FUZZ"
+    "vulnerability detection": "Vulnerabilities Detection"
+    "program repair": "Program Repair"
+    "anomaly detection": "Anomaly Detection"
+    "penetration testing": "LLM Assisted Attack"
+    "agent": "Further Research: Agent4Cybersecurity"
+  
+  # 排除关键词 - 如果包含这些词，不太可能属于对应分类
+  exclusion_keywords:
+    "Cybersecurity Evaluation Benchmarks": ["repair", "attack", "exploit"]
+    "FUZZ": ["repair", "intelligence", "education"]
+    "Threat Intelligence": ["fuzzing", "repair", "benchmark"]
+
+# 多语言支持
+language_specific_prompts:
+  zh:
+    system_prompt: |
+      你是一个专业的学术论文分类专家，专门负责将网络安全与大语言模型(LLM)相关的论文进行准确分类。
+      请根据论文内容将其归类到最合适的类别中。
+  
+  en:
+    system_prompt: |
+      You are a professional academic paper classification expert specializing in accurately categorizing papers related to cybersecurity and Large Language Models (LLMs).
+      Please classify papers into the most appropriate categories based on their content.

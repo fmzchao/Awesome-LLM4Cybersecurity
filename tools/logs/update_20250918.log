@@ -1,0 +1,5 @@
+2025-09-18 00:41:27 - llm4cybersecurity - INFO - ============================================================
+2025-09-18 00:41:27 - llm4cybersecurity - INFO - LLM4Cybersecurity文档自动更新工具启动
+2025-09-18 00:41:27 - llm4cybersecurity - INFO - 运行参数: days=7, sources=None, dry_run=True
+2025-09-18 00:41:27 - llm4cybersecurity - INFO - 加载配置文件...
+2025-09-18 00:41:27 - llm4cybersecurity - ERROR - 配置文件验证失败

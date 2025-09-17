@@ -1,0 +1,166 @@
+# 分类示例和测试用例
+# 用于验证和改进分类算法的准确性
+
+test_cases:
+  # RQ1 测试用例
+  rq1_examples:
+    cybersecurity_evaluation_benchmarks:
+      - title: "SecBench: A Comprehensive Multi-Dimensional Benchmarking Dataset for LLMs in Cybersecurity"
+        expected_category: "rq1"
+        expected_subcategory: "Cybersecurity Evaluation Benchmarks"
+        keywords: ["benchmark", "dataset", "evaluation", "cybersecurity"]
+        
+      - title: "CS-Eval: A Comprehensive Large Language Model Benchmark for CyberSecurity"
+        expected_category: "rq1"
+        expected_subcategory: "Cybersecurity Evaluation Benchmarks"
+        keywords: ["evaluation", "benchmark", "cybersecurity"]
+        
+      - title: "NYU CTF Dataset: A Scalable Open-Source Benchmark Dataset for Evaluating LLMs in Offensive Security"
+        expected_category: "rq1"
+        expected_subcategory: "Cybersecurity Evaluation Benchmarks"
+        keywords: ["CTF", "dataset", "benchmark", "evaluation"]
+    
+    fine_tuned_domain_llms:
+      - title: "Fine-tuning Large Language Models for DGA and DNS Exfiltration Detection"
+        expected_category: "rq1"
+        expected_subcategory: "Fine-tuned Domain LLMs for Cybersecurity"
+        keywords: ["fine-tuning", "domain-specific", "DNS", "detection"]
+        
+      - title: "CyberPal.AI: Empowering LLMs with Expert-Driven Cybersecurity Instructions"
+        expected_category: "rq1"
+        expected_subcategory: "Fine-tuned Domain LLMs for Cybersecurity"
+        keywords: ["instruction tuning", "cybersecurity", "expert-driven"]
+
+  # RQ2 测试用例
+  rq2_examples:
+    threat_intelligence:
+      - title: "Cyber Defense Reinvented: Large Language Models as Threat Intelligence Copilots"
+        expected_category: "rq2"
+        expected_subcategory: "Threat Intelligence"
+        keywords: ["threat intelligence", "cyber defense", "copilots"]
+        
+      - title: "IntellBot: Retrieval Augmented LLM Chatbot for Cyber Threat Knowledge Delivery"
+        expected_category: "rq2"
+        expected_subcategory: "Threat Intelligence"
+        keywords: ["threat knowledge", "chatbot", "intelligence"]
+    
+    fuzz:
+      - title: "Large Language Model assisted Hybrid Fuzzing"
+        expected_category: "rq2"
+        expected_subcategory: "FUZZ"
+        keywords: ["fuzzing", "hybrid", "testing"]
+        
+      - title: "ChatHTTPFuzz: Large Language Model-Assisted IoT HTTP Fuzzing"
+        expected_category: "rq2"
+        expected_subcategory: "FUZZ"
+        keywords: ["fuzzing", "HTTP", "IoT", "testing"]
+    
+    vulnerabilities_detection:
+      - title: "Large Language Models for In-File Vulnerability Localization"
+        expected_category: "rq2"
+        expected_subcategory: "Vulnerabilities Detection"
+        keywords: ["vulnerability", "localization", "detection"]
+        
+      - title: "ChatNVD: Advancing Cybersecurity Vulnerability Assessment with Large Language Models"
+        expected_category: "rq2"
+        expected_subcategory: "Vulnerabilities Detection"
+        keywords: ["vulnerability assessment", "NVD", "cybersecurity"]
+    
+    program_repair:
+      - title: "LLM4CVE: Enabling Iterative Automated Vulnerability Repair with Large Language Models"
+        expected_category: "rq2"
+        expected_subcategory: "Program Repair"
+        keywords: ["vulnerability repair", "automated", "CVE"]
+        
+      - title: "Automated Software Vulnerability Patching using Large Language Models"
+        expected_category: "rq2"
+        expected_subcategory: "Program Repair"
+        keywords: ["patching", "automated", "vulnerability"]
+    
+    anomaly_detection:
+      - title: "APT-LLM: Embedding-Based Anomaly Detection of Cyber Advanced Persistent Threats"
+        expected_category: "rq2"
+        expected_subcategory: "Anomaly Detection"
+        keywords: ["anomaly detection", "APT", "embedding"]
+        
+      - title: "LogLLM: Log-based Anomaly Detection Using Large Language Models"
+        expected_category: "rq2"
+        expected_subcategory: "Anomaly Detection"
+        keywords: ["log analysis", "anomaly detection", "LLM"]
+    
+    llm_assisted_attack:
+      - title: "RapidPen: Fully Automated IP-to-Shell Penetration Testing with LLM-based Agents"
+        expected_category: "rq2"
+        expected_subcategory: "LLM Assisted Attack"
+        keywords: ["penetration testing", "automated", "attack"]
+        
+      - title: "HackSynth: LLM Agent and Evaluation Framework for Autonomous Penetration Testing"
+        expected_category: "rq2"
+        expected_subcategory: "LLM Assisted Attack"
+        keywords: ["penetration testing", "autonomous", "hacking"]
+
+  # RQ3 测试用例
+  rq3_examples:
+    agent4cybersecurity:
+      - title: "VulnBot: Autonomous Penetration Testing for A Multi-Agent Collaborative Framework"
+        expected_category: "rq3"
+        expected_subcategory: "Further Research: Agent4Cybersecurity"
+        keywords: ["autonomous", "multi-agent", "collaborative"]
+        
+      - title: "Multi-Agent Collaboration in Incident Response with Large Language Models"
+        expected_category: "rq3"
+        expected_subcategory: "Further Research: Agent4Cybersecurity"
+        keywords: ["multi-agent", "collaboration", "incident response"]
+
+# 边界情况测试
+edge_cases:
+  # 可能混淆的情况
+  confusing_cases:
+    - title: "Benchmarking Large Language Models for Vulnerability Detection"
+      note: "包含benchmark和vulnerability detection，需要判断主要焦点"
+      possible_categories: ["Cybersecurity Evaluation Benchmarks", "Vulnerabilities Detection"]
+      
+    - title: "Fine-tuning LLMs for Automated Penetration Testing"
+      note: "包含fine-tuning和penetration testing，需要判断主要目的"
+      possible_categories: ["Fine-tuned Domain LLMs for Cybersecurity", "LLM Assisted Attack"]
+      
+    - title: "Agent-based Vulnerability Repair Framework"
+      note: "包含agent和repair，需要确定主要贡献"
+      possible_categories: ["Program Repair", "Further Research: Agent4Cybersecurity"]
+
+# 分类质量评估指标
+quality_metrics:
+  accuracy_targets:
+    overall: 0.85          # 总体准确率目标
+    rq1: 0.90             # RQ1分类准确率
+    rq2: 0.85             # RQ2分类准确率
+    rq3: 0.80             # RQ3分类准确率
+  
+  confidence_targets:
+    high_confidence: 0.80  # 高置信度比例目标
+    average_confidence: 0.70  # 平均置信度目标
+  
+  consistency_targets:
+    inter_run_consistency: 0.95  # 多次运行一致性
+    cross_model_consistency: 0.85  # 不同模型间一致性
+
+# 人工审核规则
+manual_review_rules:
+  # 需要人工审核的情况
+  review_triggers:
+    - low_confidence: 0.6    # 置信度低于0.6
+    - keyword_conflicts: true  # 关键词冲突
+    - edge_case_detected: true # 检测到边界情况
+    - novel_research_area: true # 新兴研究领域
+  
+  # 审核优先级
+  review_priority:
+    high:
+      - confidence_below: 0.4
+      - multiple_category_match: true
+    medium:
+      - confidence_below: 0.6
+      - new_venue: true
+    low:
+      - confidence_below: 0.8
+      - minor_uncertainties: true

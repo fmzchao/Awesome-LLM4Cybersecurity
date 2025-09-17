@@ -1,0 +1,209 @@
+# 数据源配置文件
+# 定义各个学术数据源的搜索参数和配置
+
+data_sources:
+  # arXiv 配置
+  arxiv:
+    enabled: true
+    base_url: "http://export.arxiv.org/api/query"
+    description: "arXiv预印本论文库"
+    
+    # 搜索词组合 - 这些搜索词将用于获取相关论文
+    search_terms:
+      # 网络安全 + 大语言模型核心组合
+      - "cybersecurity AND (large language model OR LLM OR GPT OR transformer)"
+      - "network security AND (artificial intelligence OR AI OR machine learning)"
+      - "information security AND (natural language processing OR NLP)"
+      
+      # 具体应用场景搜索
+      - "vulnerability detection AND (LLM OR large language model)"
+      - "malware analysis AND (GPT OR transformer OR language model)"
+      - "threat intelligence AND artificial intelligence"
+      - "penetration testing AND (AI OR machine learning)"
+      - "intrusion detection AND (LLM OR language model)"
+      - "phishing detection AND (GPT OR transformer)"
+      
+      # 代码安全相关
+      - "secure code generation AND (LLM OR GPT)"
+      - "code vulnerability AND (language model OR AI)"
+      - "automated program repair AND (LLM OR GPT)"
+      - "static code analysis AND artificial intelligence"
+      
+      # 模糊测试相关  
+      - "fuzzing AND (LLM OR large language model OR AI)"
+      - "software testing AND (GPT OR transformer)"
+      
+      # 异常检测相关
+      - "anomaly detection AND (language model OR LLM)"
+      - "log analysis AND (AI OR machine learning OR LLM)"
+      
+      # 新兴研究方向
+      - "AI agent AND cybersecurity"
+      - "multi-agent system AND security"
+      - "autonomous cybersecurity AND AI"
+    
+    # 每次搜索的最大结果数
+    max_results: 50
+    
+    # 更新频率
+    update_frequency: "daily"
+    
+    # 时间过滤 - 只获取最近的论文
+    max_age_days: 30
+    
+    # 质量过滤配置
+    quality_filters:
+      min_title_length: 10
+      min_abstract_length: 100
+      required_keywords: ["security", "AI", "LLM", "machine learning", "artificial intelligence"]
+
+  # ACM Digital Library 配置 (未来支持)
+  acm:
+    enabled: false
+    base_url: "https://dl.acm.org/action/doSearch"
+    description: "ACM数字图书馆"
+    
+    search_terms:
+      - "cybersecurity machine learning"
+      - "AI security applications"
+      - "language models cybersecurity"
+      - "automated security analysis"
+    
+    max_results: 30
+    
+    # ACM需要特殊的访问配置
+    access_config:
+      requires_subscription: true
+      rate_limit: 10  # 每分钟最大请求数
+    
+    quality_filters:
+      min_citation_count: 1
+      venue_types: ["conference", "journal"]
+
+  # IEEE Xplore 配置 (需要API密钥)
+  ieee:
+    enabled: false
+    base_url: "https://ieeexploreapi.ieee.org/api/v1/search/articles"
+    description: "IEEE Xplore数字图书馆"
+    
+    # 需要从环境变量获取API密钥
+    api_key: "${IEEE_API_KEY}"
+    
+    search_terms:
+      - "cybersecurity artificial intelligence"
+      - "machine learning network security"
+      - "AI-driven security systems"
+      - "intelligent threat detection"
+    
+    max_results: 30
+    
+    # IEEE特定的过滤器
+    filters:
+      publication_year: 2020  # 最早年份
+      document_type: ["Conferences", "Journals"]
+      subject_areas: ["Computer Science", "Security"]
+    
+    access_config:
+      rate_limit: 20  # 每分钟最大请求数
+      timeout: 30     # 请求超时时间(秒)
+
+  # GitHub 学术项目配置 (未来支持)
+  github:
+    enabled: false
+    base_url: "https://api.github.com/search/repositories"
+    description: "GitHub学术项目和论文"
+    
+    search_terms:
+      - "LLM cybersecurity papers"
+      - "AI security research"
+      - "machine learning security datasets"
+    
+    # GitHub特定配置
+    filters:
+      min_stars: 10
+      has_topics: ["cybersecurity", "machine-learning", "research"]
+      file_extensions: [".pdf", ".md"]
+    
+    access_config:
+      requires_token: true
+      rate_limit: 60  # 每小时
+
+# 全局配置
+global_settings:
+  # 默认的论文质量标准
+  default_quality_standards:
+    min_title_length: 15
+    min_abstract_length: 80
+    max_abstract_length: 5000
+    required_language: "en"  # 英语论文
+  
+  # 去重配置
+  deduplication:
+    title_similarity_threshold: 0.85
+    url_comparison: true
+    author_comparison: false
+  
+  # 缓存配置
+  caching:
+    cache_search_results: true
+    cache_duration_hours: 24
+    max_cache_size_mb: 100
+  
+  # 错误处理
+  error_handling:
+    max_retries: 3
+    retry_delay_seconds: 5
+    ignore_ssl_errors: false
+  
+  # 输出格式
+  output_format:
+    date_format: "%Y.%m.%d"
+    venue_standardization: true
+    author_limit: 10  # 最多显示的作者数
+
+# 数据源优先级 (按顺序尝试)
+source_priority:
+  - "arxiv"      # 最高优先级，覆盖面广
+  - "ieee"       # 高质量会议和期刊
+  - "acm"        # 计算机科学权威
+  - "github"     # 开源项目和数据集
+
+# 搜索策略配置
+search_strategies:
+  # 广度优先 - 覆盖更多领域
+  broad_search:
+    use_general_terms: true
+    include_related_fields: true
+    max_papers_per_source: 100
+  
+  # 深度优先 - 专注特定领域
+  focused_search:
+    use_specific_terms: true
+    filter_by_venue: true
+    max_papers_per_source: 30
+  
+  # 平衡模式 - 默认策略
+  balanced_search:
+    combine_strategies: true
+    adaptive_filtering: true
+    max_papers_per_source: 50
+
+# 监控和报告
+monitoring:
+  # 数据源健康检查
+  health_check:
+    enabled: true
+    check_interval_minutes: 60
+    alert_on_failure: true
+  
+  # 统计报告
+  statistics:
+    track_success_rate: true
+    track_response_time: true
+    generate_daily_report: true
+  
+  # 日志配置  
+  logging:
+    log_search_queries: true
+    log_response_sizes: true
+    log_error_details: true
