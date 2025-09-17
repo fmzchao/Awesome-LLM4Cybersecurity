@@ -457,8 +457,6 @@
 
 
 
-
-32. 参数高效微调方法在代码LLM安全性中的系统评估 ｜ *arXiv* ｜ 2025.09.16 ｜ [<u>论文链接</u>](http://arxiv.org/pdf/2509.12649v1.pdf)
 #### 程序修复
 
 1. LLM4CVE：利用大语言模型实现迭代式自动漏洞修复 | *arXiv* | 2025.01.07 | [<u>论文链接</u>](https://arxiv.org/pdf/2501.03446)
@@ -744,10 +742,6 @@
 43. 识别和缓解生成式AI的安全风险 | *Foundations and Trends in Privacy and Security* | 2023.12.29 | [<u>论文链接</u>](https://arxiv.org/abs/2308.14840)
 
 
-
-44. 通过内容具体化技术破解大语言模型 ｜ *arXiv* ｜ 2025.09.16 ｜ [<u>论文链接</u>](http://arxiv.org/pdf/2509.12937v1.pdf)
-
-45. xOffense: 基于AI驱动的自主渗透测试框架，结合进攻知识增强的LLM和多智能体系统 ｜ *arXiv* ｜ 2025.09.16 ｜ [<u>论文链接</u>](http://arxiv.org/pdf/2509.13021v1.pdf)
 #### 其他应用
 
 1. ChatIoT：基于大型语言模型和检索增强生成的物联网安全助手 | *arXiv* | 2025.02.14 | [<u>论文链接</u>](https://arxiv.org/pdf/2502.09896)
@@ -827,8 +821,6 @@
 
 
 
-
-38. GView：通过视觉、语义和AI增强分析的二进制法证调查综述 ｜ *arXiv* ｜ 2025.09.16 ｜ [<u>论文链接</u>](http://arxiv.org/pdf/2509.13025v1.pdf)
 ### RQ3：关于大型语言模型在网络安全中的应用，还有哪些进一步的研究方向？
 
 #### 进一步研究：Agent4Cybersecurity（网络安全智能体）

@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from datetime import datetime
 import re
 import logging
+from typing import List, Optional
 
 import sys
 import os
@@ -25,6 +26,7 @@ class ProcessedPaper:
     confidence: float
     keywords: List[str]
     reasoning: str
+    chinese_title: Optional[str] = None  # 中文标题
 
 class PaperProcessor:
     """论文数据处理器"""
@@ -52,7 +54,8 @@ class PaperProcessor:
             subcategory=classification.subcategory,
             confidence=classification.confidence,
             keywords=paper.keywords or [],
-            reasoning=classification.reasoning
+            reasoning=classification.reasoning,
+            chinese_title=classification.chinese_title
         )
     
     def process_papers_batch(self, papers: List[Paper], classifications: List[ClassificationResult]) -> List[ProcessedPaper]:

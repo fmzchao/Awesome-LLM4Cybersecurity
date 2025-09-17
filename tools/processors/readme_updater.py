@@ -9,9 +9,25 @@ from .paper_processor import ProcessedPaper
 class ReadmeUpdater:
     """README.md文件更新器"""
     
-    def __init__(self, readme_path: str = "README.md"):
+    def __init__(self, readme_path: str = "README.md", language: str = "en"):
         self.readme_path = readme_path
+        self.language = language  # "en" 或 "zh"
         self.logger = logging.getLogger(__name__)
+        
+        # 英文到中文分类名称映射
+        self.en_to_zh_mapping = {
+            "Cybersecurity Evaluation Benchmarks": "网络安全评测基准",
+            "Fine-tuned Domain LLMs for Cybersecurity": "网络安全领域微调大模型",
+            "Threat Intelligence": "威胁情报",
+            "FUZZ": "模糊测试（FUZZ）",
+            "Vulnerabilities Detection": "漏洞检测",
+            "Insecure code Generation": "不安全代码生成",
+            "Program Repair": "程序修复",
+            "Anomaly Detection": "异常检测",
+            "LLM Assisted Attack": "大模型辅助攻击",
+            "Others": "其他应用",
+            "Further Research: Agent4Cybersecurity": "进一步研究：Agent4Cybersecurity（网络安全智能体）"
+        }
         
         # 确保文件存在
         if not os.path.exists(readme_path):
@@ -71,8 +87,14 @@ class ReadmeUpdater:
     
     def _build_section_pattern(self, subcategory: str) -> str:
         """构建分类章节的正则表达式"""
+        # 根据语言选择合适的分类名称
+        if self.language == "zh" and subcategory in self.en_to_zh_mapping:
+            target_subcategory = self.en_to_zh_mapping[subcategory]
+        else:
+            target_subcategory = subcategory
+        
         # 转义特殊字符
-        escaped_subcategory = re.escape(subcategory)
+        escaped_subcategory = re.escape(target_subcategory)
         
         # 匹配markdown标题
         pattern = f"####\\s+{escaped_subcategory}\\s*\n(.*?)(?=\n####|\n###|\n##|\\Z)"
@@ -96,8 +118,14 @@ class ReadmeUpdater:
     
     def _find_insertion_point(self, content: str, subcategory: str) -> int:
         """找到论文插入位置"""
+        # 根据语言选择合适的分类名称
+        if self.language == "zh" and subcategory in self.en_to_zh_mapping:
+            target_subcategory = self.en_to_zh_mapping[subcategory]
+        else:
+            target_subcategory = subcategory
+        
         # 首先找到subcategory的位置
-        subcategory_pattern = f"####\\s+{re.escape(subcategory)}"
+        subcategory_pattern = f"####\\s+{re.escape(target_subcategory)}"
         subcategory_match = re.search(subcategory_pattern, content)
         
         if not subcategory_match:
@@ -120,10 +148,24 @@ class ReadmeUpdater:
         """格式化论文条目"""
         date_str = paper.publish_date.strftime("%Y.%m.%d")
         
-        # 清理标题中可能导致markdown格式问题的字符
-        clean_title = paper.title.replace('[', '\\[').replace(']', '\\]')
+        # 根据语言选择合适的标题
+        if self.language == "zh":
+            # 中文版优先使用中文标题，如果没有则使用英文标题
+            title = getattr(paper, 'chinese_title', paper.title) or paper.title
+            link_text = "论文链接"
+        else:
+            # 英文版使用英文标题
+            title = paper.title
+            link_text = "Paper Link"
         
-        entry = f"{number}. {clean_title} | *{paper.venue}* | {date_str} | [<u>Paper Link</u>]({paper.url})"
+        # 清理标题中可能导致markdown格式问题的字符
+        clean_title = title.replace('[', '\\[').replace(']', '\\]')
+        
+        # 根据语言格式化条目
+        if self.language == "zh":
+            entry = f"{number}. {clean_title} ｜ *{paper.venue}* ｜ {date_str} ｜ [<u>{link_text}</u>]({paper.url})"
+        else:
+            entry = f"{number}. {clean_title} | *{paper.venue}* | {date_str} | [<u>{link_text}</u>]({paper.url})"
         
         return entry
     
@@ -190,16 +232,27 @@ class ReadmeUpdater:
             with open(self.readme_path, 'r', encoding='utf-8') as f:
                 content = f.read()
             
-            # 检查必要的章节是否存在
-            required_sections = [
-                "## 🔥 Updates",
-                "## 🌈 Introduction", 
-                "## 🚩 Features",
-                "## 🌟 Literatures",
-                "### RQ1:",
-                "### RQ2:",
-                "### RQ3:"
-            ]
+            # 根据语言选择需要检查的章节
+            if self.language == "zh":
+                required_sections = [
+                    "## 🔥 更新日志",
+                    "## 🌈 引言", 
+                    "## 🚩 研究特性",
+                    "## 🌟 文献汇总",
+                    "### RQ1：",
+                    "### RQ2：",
+                    "### RQ3："
+                ]
+            else:
+                required_sections = [
+                    "## 🔥 Updates",
+                    "## 🌈 Introduction", 
+                    "## 🚩 Features",
+                    "## 🌟 Literatures",
+                    "### RQ1:",
+                    "### RQ2:",
+                    "### RQ3:"
+                ]
             
             missing_sections = []
             for section in required_sections:

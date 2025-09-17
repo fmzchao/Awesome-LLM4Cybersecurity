@@ -15,16 +15,16 @@ def setup_logger(name: str = "llm4cybersecurity",
         if log_dir and not os.path.exists(log_dir):
             os.makedirs(log_dir)
     
-    # 创建logger
-    logger = logging.getLogger(name)
-    
-    # 避免重复添加handler
-    if logger.handlers:
-        return logger
-    
     # 设置日志级别
     log_level = getattr(logging, level.upper(), logging.INFO)
-    logger.setLevel(log_level)
+    
+    # 配置根日志器以捕获所有模块的日志
+    root_logger = logging.getLogger()
+    root_logger.setLevel(log_level)
+    
+    # 清除已有的处理器，避免重复输出
+    if root_logger.handlers:
+        root_logger.handlers.clear()
     
     # 创建格式器
     formatter = logging.Formatter(
@@ -36,13 +36,19 @@ def setup_logger(name: str = "llm4cybersecurity",
     if console_output:
         console_handler = logging.StreamHandler()
         console_handler.setFormatter(formatter)
-        logger.addHandler(console_handler)
+        console_handler.setLevel(log_level)
+        root_logger.addHandler(console_handler)
     
     # 文件输出
     if log_file:
         file_handler = logging.FileHandler(log_file, encoding='utf-8')
         file_handler.setFormatter(formatter)
-        logger.addHandler(file_handler)
+        file_handler.setLevel(log_level)
+        root_logger.addHandler(file_handler)
+    
+    # 返回指定名称的日志器
+    logger = logging.getLogger(name)
+    logger.setLevel(log_level)
     
     return logger
 

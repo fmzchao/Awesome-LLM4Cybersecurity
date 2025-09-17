@@ -1,7 +1,8 @@
 import json
 import logging
 import requests
-from typing import Dict, List
+import json
+from typing import Dict, List, Optional
 from .base_classifier import BaseClassifier, ClassificationResult
 
 class OpenAIClassifier(BaseClassifier):
@@ -48,6 +49,11 @@ class OpenAIClassifier(BaseClassifier):
             
             result_text = response.json()['choices'][0]['message']['content'].strip()
             classification_result = self._parse_classification_result(result_text)
+            
+            # 检查是否为拒绝分类
+            if classification_result.category == "REJECT":
+                self.logger.info(f"论文 '{paper.title[:50]}...' 被拒绝分类: {classification_result.reasoning}")
+                return classification_result
             
             # 应用优先级规则
             classification_result = self._apply_priority_rules(paper, classification_result)
@@ -122,6 +128,12 @@ class OpenAIClassifier(BaseClassifier):
    - 0.3-0.4: 不太确定，分类可能不准确
    - 0.1-0.2: 很不确定，建议重新评估
 
+6. 中文标题要求：
+   - 中文标题是必须字段，不能留空
+   - 如果原标题已是中文，请直接返回原标题
+   - 如果需要翻译，请保持技术术语的准确性和学术性
+   - 翻译时请保持简洁明了，避免过于冗长
+
 请确保返回有效的JSON格式，包含所有必需字段。
 """
         return guidance
@@ -147,7 +159,8 @@ class OpenAIClassifier(BaseClassifier):
                 category=result_data.get('category', 'rq2'),
                 subcategory=result_data.get('subcategory', 'Others'),
                 confidence=float(result_data.get('confidence', 0.5)),
-                reasoning=result_data.get('reasoning', 'AI分类结果')
+                reasoning=result_data.get('reasoning', 'AI分类结果'),
+                chinese_title=result_data.get('chinese_title', None)
             )
             
         except (json.JSONDecodeError, ValueError, KeyError) as e:

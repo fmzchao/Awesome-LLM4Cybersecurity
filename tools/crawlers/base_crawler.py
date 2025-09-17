@@ -36,15 +36,13 @@ class BaseCrawler(ABC):
         pass
     
     def is_cybersecurity_related(self, paper: Paper) -> bool:
-        """判断是否与网络安全相关"""
-        cybersec_keywords = [
-            'cybersecurity', 'cyber security', 'network security',
-            'information security', 'vulnerability', 'malware',
-            'intrusion detection', 'penetration testing', 'threat'
-        ]
+        """判断是否与网络安全相关
         
-        text = f"{paper.title} {paper.abstract}".lower()
-        return any(keyword in text for keyword in cybersec_keywords)
+        注意：为了避免关键词匹配的误报和漏报问题，
+        现在所有论文都会被保留，由GPT进行更精确的分类和筛选。
+        """
+        # 直接返回True，让所有论文都交给GPT判断
+        return True
     
     def validate_paper(self, paper: Paper) -> bool:
         """验证论文数据的完整性"""

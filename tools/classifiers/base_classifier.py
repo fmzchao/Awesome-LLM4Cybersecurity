@@ -10,6 +10,7 @@ class ClassificationResult:
     subcategory: str
     confidence: float
     reasoning: str
+    chinese_title: Optional[str] = None  # 可选的中文标题
 
 class BaseClassifier(ABC):
     def __init__(self, config: Dict, prompt_config_path: str = "config/classification_prompts.yaml"):

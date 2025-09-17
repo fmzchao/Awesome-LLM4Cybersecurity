@@ -457,8 +457,6 @@ We seek to address three key questions:
 
 
 
-
-32. A Systematic Evaluation of Parameter-Efficient Fine-Tuning Methods for the Security of Code LLMs | *arXiv* | 2025.09.16 | [<u>Paper Link</u>](http://arxiv.org/pdf/2509.12649v1.pdf)
 #### Program Repair
 
 1. LLM4CVE: Enabling Iterative Automated Vulnerability Repair with Large Language Models | *arXiv* | 2025.01.07 | [<u>Paper Link</u>](https://arxiv.org/pdf/2501.03446)
@@ -744,10 +742,6 @@ We seek to address three key questions:
 43. Identifying and mitigating the security risks of generative ai | *Foundations and Trends in Privacy and Security* | 2023.12.29 | [<u>Paper Link</u>](https://arxiv.org/abs/2308.14840)
 
 
-
-44. Jailbreaking Large Language Models Through Content Concretization | *arXiv* | 2025.09.16 | [<u>Paper Link</u>](http://arxiv.org/pdf/2509.12937v1.pdf)
-
-45. xOffense: An AI-driven autonomous penetration testing framework with offensive knowledge-enhanced LLMs and multi agent systems | *arXiv* | 2025.09.16 | [<u>Paper Link</u>](http://arxiv.org/pdf/2509.13021v1.pdf)
 #### Others
 
 1. ChatIoT: Large Language Model-based Security Assistant for Internet of Things with Retrieval-Augmented Generation | *arXiv* | 2025.02.14 | [<u>Paper Link</u>](https://arxiv.org/pdf/2502.09896)
@@ -827,8 +821,6 @@ We seek to address three key questions:
 
 
 
-
-38. GView: A Survey of Binary Forensics via Visual, Semantic, and AI-Enhanced Analysis | *arXiv* | 2025.09.16 | [<u>Paper Link</u>](http://arxiv.org/pdf/2509.13025v1.pdf)
 ### RQ3: What are further research directions about the application of LLMs in cybersecurity?
 
 #### Further Research: Agent4Cybersecurity

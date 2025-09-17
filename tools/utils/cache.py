@@ -2,7 +2,7 @@ import json
 import os
 import hashlib
 from datetime import datetime, timedelta
-from typing import Dict, Set, Optional, Any
+from typing import Dict, Set, Optional, Any, List
 import logging
 
 class CacheManager:
@@ -56,16 +56,30 @@ class CacheManager:
         return key in self.processed_papers
     
     def mark_paper_processed(self, paper_url: str, paper_title: str = "", 
-                           category: str = "", confidence: float = 0.0):
+                           category: str = "", confidence: float = 0.0,
+                           reasoning: str = "", chinese_title: str = "",
+                           authors: Optional[List[str]] = None, abstract: str = ""):
         """标记论文为已处理"""
         key = self._generate_paper_key(paper_url, paper_title)
-        self.processed_papers[key] = {
+        cache_data = {
             'url': paper_url,
             'title': paper_title,
             'category': category,
             'confidence': confidence,
             'processed_at': datetime.now().isoformat()
         }
+        
+        # 添加可选的详细信息
+        if reasoning:
+            cache_data['reasoning'] = reasoning
+        if chinese_title:
+            cache_data['chinese_title'] = chinese_title
+        if authors:
+            cache_data['authors'] = authors[:5]  # 最多保存5个作者
+        if abstract:
+            cache_data['abstract'] = abstract[:200] + '...' if len(abstract) > 200 else abstract
+            
+        self.processed_papers[key] = cache_data
         self._save_cache(self.processed_papers, self.processed_papers_file)
     
     def is_paper_failed(self, paper_url: str, paper_title: str = "") -> bool:

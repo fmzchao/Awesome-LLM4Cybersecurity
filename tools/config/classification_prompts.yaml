@@ -1,27 +1,81 @@
 classification_prompts:
   system_prompt: |
-    你是一个专业的学术论文分类专家，专门负责将网络安全与大语言模型(LLM)相关的论文进行准确分类。
-    你需要根据论文的标题、摘要和关键词，将其分类到最合适的类别中。
-    请仔细分析论文内容，确保分类的准确性。
+    你是一个专业的学术论文分类专家，专门负责将安全与大语言模型(LLM)相关的论文进行准确分类.
+    
+    ⚠️ 论文领域范围：
+    本项目专注于大语言模型(LLM)在安全领域的应用研究，包括但不限于：
+    1. 网络安全 (Cybersecurity): 网络攻击防护、入侵检测、威胁情报等
+    2. 计算机安全 (Computer Security): 系统安全、软件安全、操作系统安全等  
+    3. 信息安全 (Information Security): 数据保护、隐私安全、加密等
+    4. 二进制安全 (Binary Security): 二进制分析、逆向工程、恶意软件分析等
+    5. 代码安全 (Code Security): 代码漏洞检测、安全编程、静态分析等
+    6. AI/大模型安全 (AI/LLM Security): 模型安全、对抗攻击、模型鲁棒性等
+    7. 软件安全 (Software Security): 应用安全、Web安全、移动安全等
+    8. 系统安全 (System Security): 操作系统、固件、硬件安全等
+    
+    ⚠️ 严格筛选标准：
+    1. 论文必须同时涉及安全领域和大语言模型(LLM/AI)两个方面
+    2. 论文的核心贡献必须是在安全领域的直接应用，而不是泛化的AI/ML研究
+    3. 排除以下弱相关论文：
+       - 仅仅是一般性的机器学习或深度学习研究
+       - 与安全无关的NLP任务（如翻译、问答、对话等）
+       - 纯数学或理论研究（除非明确用于安全场景）
+       - 医疗、金融、教育等其他领域应用（除非涉及这些领域的安全问题）
+       - 一般性的数据挖掘或分析研究
+    4. 如果论文只是"可能用于安全"但核心贡献不在安全领域，必须拒绝分类
+    
+    请仔细分析论文内容，确保分类的准确性和严格性。
 
   base_prompt_template: |
-    请将以下论文分类到最合适的类别中：
+    请分析以下论文是否属于安全与大语言模型(LLM)交叉领域的研究：
 
     论文标题: {title}
     论文摘要: {abstract}
     发表venue: {venue}
     关键词: {keywords}
 
-    可选分类及其详细描述:
+    ⚠️ 严格评估标准：
+    1. 论文是否明确涉及安全主题？包括但不限于：
+       - 网络安全 (cybersecurity, network security)
+       - 计算机安全 (computer security, system security)  
+       - 信息安全 (information security, data security)
+       - 二进制安全 (binary security, reverse engineering, malware analysis)
+       - 代码安全 (code security, software security, vulnerability)
+       - AI/模型安全 (AI security, model security, adversarial)
+       - 应用安全 (application security, web security, mobile security)
+    
+    2. 论文是否使用或研究大语言模型(LLM/GPT/transformer/language model)？
+    
+    3. 论文的核心贡献是否在安全领域，而不是一般性的AI/ML研究？
+    
+    4. 论文是否解决了具体的安全问题，而不仅仅是可能适用于安全场景？
+
+    如果论文不满足以上所有条件，请返回拒绝分类的结果：
+    {{
+        "category": "REJECT",
+        "subcategory": "Not Relevant",
+        "confidence": 0.9,
+        "reasoning": "该论文不符合安全与LLM交叉领域的标准，原因：[具体说明缺少哪个方面]",
+        "chinese_title": "[论文的中文标题翻译]"
+    }}
+
+    如果论文符合标准，请分类到以下类别中：
     {categories_description}
 
-    请返回JSON格式的结果:
+    请返回JSON格式的结果，其中必须包含中文标题字段:
     {{
         "category": "主分类ID (rq1/rq2/rq3)",
         "subcategory": "子分类名称",
         "confidence": 0.8,
-        "reasoning": "详细的分类理由，说明为什么选择这个分类"
+        "reasoning": "详细的分类理由，说明为什么选择这个分类以及为什么该论文符合安全与LLM交叉领域的标准",
+        "chinese_title": "请提供论文标题的中文翻译，如果原标题已是中文则原样返回，翻译时请保持学术性和准确性"
     }}
+    
+    注意：
+    1. 中文标题是必填字段，不能为空
+    2. 如果原标题已是中文，请直接返回原标题
+    3. 如果需要翻译，请保持技术术语的准确性
+    4. 宁可过度保守也不要误报弱相关论文
 
   categories:
     rq1:
@@ -83,13 +137,15 @@ classification_prompts:
       subcategories:
         "Threat Intelligence":
           description: |
-            利用大语言模型进行威胁情报分析、收集、处理和生成的研究。
+            专门利用大语言模型进行威胁情报分析、收集、处理和生成的研究。
+            ⚠️ 严格要求：必须明确涉及威胁情报和LLM的结合
             这类研究主要关注：
-            - 自动化威胁情报收集和分析
-            - 网络攻击归因和溯源
-            - 威胁报告自动生成
-            - 恶意软件分析和分类
-            - 攻击技术和策略(TTP)分析
+            - 使用LLM自动化威胁情报收集和分析
+            - 基于LLM的网络攻击归因和溯源
+            - LLM辅助威胁报告自动生成
+            - 利用LLM进行恶意软件分析和分类
+            - 基于LLM的攻击技术和策略(TTP)分析
+            - 二进制恶意代码分析使用LLM
           keywords:
             - "threat intelligence"
             - "CTI"
@@ -101,60 +157,69 @@ classification_prompts:
             - "intelligence automation"
             - "cyber threat"
             - "threat report"
+            - "security intelligence"
+            - "binary malware"
+            - "reverse engineering"
           examples:
             - "基于LLM的威胁情报自动分析"
-            - "恶意软件家族分类"
-            - "网络攻击归因分析"
+            - "恶意软件家族分类使用GPT"
+            - "二进制恶意代码分析与LLM"
 
         "FUZZ":
           description: |
-            使用大语言模型进行模糊测试、漏洞挖掘和安全测试的研究。
+            专门使用大语言模型进行模糊测试、漏洞挖掘和安全测试的研究。
+            ⚠️ 严格要求：必须明确是网络安全测试应用，不是一般性软件测试
             这类研究主要关注：
-            - LLM辅助的模糊测试用例生成
-            - 智能化测试输入构造
-            - 协议模糊测试
-            - API和接口安全测试
-            - 测试覆盖率优化
+            - LLM辅助的安全模糊测试用例生成
+            - 智能化网络协议安全测试
+            - 基于LLM的漏洞挖掘和发现
+            - API和接口安全测试使用LLM
+            - 网络安全测试覆盖率优化
           keywords:
-            - "fuzzing"
-            - "fuzz testing"
-            - "test case generation"
-            - "vulnerability discovery"
+            - "security fuzzing"
+            - "vulnerability fuzzing"
             - "security testing"
-            - "mutation testing"
-            - "protocol fuzzing"
-            - "API testing"
-            - "automated testing"
-            - "test input generation"
+            - "penetration testing"
+            - "exploit generation"
+            - "security test case"
+            - "protocol security testing"
+            - "cybersecurity testing"
           examples:
-            - "LLM生成模糊测试用例"
-            - "协议模糊测试自动化"
-            - "API安全测试工具"
+            - "LLM生成网络安全模糊测试用例"
+            - "协议安全模糊测试自动化"
+            - "API安全测试工具基于GPT"
 
         "Vulnerabilities Detection":
           description: |
-            利用大语言模型检测代码漏洞、安全缺陷和系统脆弱性的研究。
+            专门利用大语言模型检测各类安全漏洞、缺陷和脆弱性的研究。
+            ⚠️ 严格要求：必须是安全漏洞检测，不是一般性代码分析
             这类研究主要关注：
-            - 源代码漏洞自动检测
-            - 智能合约安全分析
-            - 二进制代码漏洞发现
-            - 配置错误检测
-            - 多语言漏洞检测
+            - 使用LLM进行源代码安全漏洞检测
+            - 基于LLM的智能合约安全分析
+            - 利用LLM进行二进制代码安全分析
+            - LLM辅助的系统配置安全检测
+            - 多语言安全漏洞检测使用LLM
+            - Web应用安全漏洞检测
+            - 移动应用安全分析
           keywords:
             - "vulnerability detection"
             - "security analysis"
-            - "code analysis"
-            - "static analysis"
+            - "code security analysis"
+            - "security static analysis"
             - "smart contract security"
-            - "binary analysis"
+            - "binary security analysis"
             - "security vulnerability"
-            - "code vulnerability"
-            - "security flaw"
+            - "security flaw detection"
             - "weakness detection"
+            - "web security analysis"
+            - "mobile security"
+            - "application security"
+            - "software security"
           examples:
-            - "基于LLM的代码漏洞检测"
-            - "智能合约安全分析"
-            - "二进制漏洞发现"
+            - "基于LLM的代码安全漏洞检测"
+            - "智能合约安全分析使用GPT"
+            - "二进制安全漏洞发现"
+            - "Web应用安全分析基于LLM"
 
         "Insecure code Generation":
           description: |
@@ -207,76 +272,95 @@ classification_prompts:
 
         "Anomaly Detection":
           description: |
-            利用大语言模型进行异常检测、入侵检测和安全监控的研究。
+            专门利用大语言模型进行安全异常检测、入侵检测和安全监控的研究。
+            ⚠️ 严格要求：必须是安全相关的异常检测，不是一般性异常检测
             这类研究主要关注：
-            - 网络异常流量检测
-            - 系统日志异常分析
-            - 用户行为异常识别
-            - 恶意软件行为检测
-            - 钓鱼邮件识别
+            - 使用LLM进行网络异常流量检测
+            - 基于LLM的安全日志异常分析
+            - 利用LLM识别恶意用户行为
+            - LLM辅助的恶意软件行为检测
+            - 基于LLM的钓鱼邮件和攻击识别
+            - 系统入侵检测使用LLM
+            - 二进制行为异常分析
           keywords:
-            - "anomaly detection"
+            - "security anomaly detection"
             - "intrusion detection"
-            - "log analysis"
-            - "network monitoring"
-            - "behavioral analysis"
+            - "security log analysis"
+            - "network security monitoring"
+            - "malicious behavior detection"
             - "phishing detection"
-            - "malware detection"
+            - "attack detection"
             - "security monitoring"
-            - "outlier detection"
-            - "abnormal behavior"
+            - "network security anomaly"
+            - "security outlier detection"
+            - "behavioral analysis"
+            - "incident detection"
           examples:
-            - "基于LLM的日志异常检测"
-            - "网络入侵检测系统"
-            - "钓鱼邮件智能识别"
+            - "基于LLM的网络安全日志异常检测"
+            - "网络入侵检测系统使用GPT"
+            - "钓鱼邮件智能识别基于LLM"
+            - "恶意软件行为检测"
 
         "LLM Assisted Attack":
           description: |
-            研究利用大语言模型进行网络攻击、渗透测试和攻击自动化的相关工作。
+            研究利用大语言模型进行各类安全攻击、渗透测试和攻击自动化的相关工作。
+            ⚠️ 严格要求：必须是明确的安全攻击应用，不是一般性对抗攻击
             这类研究主要关注：
-            - LLM辅助的渗透测试
-            - 自动化攻击工具开发
-            - 社会工程学攻击
-            - 恶意代码生成
-            - 攻击策略规划
+            - LLM辅助的网络渗透测试
+            - 使用LLM进行自动化安全攻击
+            - 基于LLM的社会工程学攻击
+            - 利用LLM生成攻击载荷和漏洞利用
+            - LLM辅助的攻击策略规划
+            - 对抗性攻击针对AI/ML系统
+            - 模型越狱和提示注入攻击
           keywords:
             - "penetration testing"
-            - "attack simulation"
+            - "security attack simulation"
             - "exploit generation"
             - "automated attack"
             - "social engineering"
             - "malicious use"
-            - "cyber attack"
-            - "hacking"
+            - "security hacking"
             - "offensive security"
             - "attack automation"
+            - "adversarial attack"
+            - "model jailbreak"
+            - "prompt injection"
+            - "AI security attack"
           examples:
-            - "LLM辅助渗透测试工具"
-            - "自动化网络攻击"
+            - "LLM辅助网络渗透测试工具"
+            - "自动化安全攻击基于GPT"
             - "智能社会工程学攻击"
+            - "AI模型对抗攻击研究"
 
         "Others":
           description: |
-            其他不属于上述具体分类但与LLM在网络安全应用相关的研究。
-            包括但不限于：
-            - 网络安全教育和培训
-            - 安全运维自动化
-            - 合规性检查
-            - 风险评估
-            - 安全可视化
+            其他明确与LLM在安全应用相关的研究（但不属于上述具体分类）。
+            ⚠️ 严格要求：必须明确是安全领域的应用，不是一般性研究
+            包括但限于：
+            - 安全教育和培训使用LLM
+            - 安全运维自动化基于LLM
+            - 安全合规性检查使用LLM
+            - 安全风险评估基于LLM
+            - 数字取证分析使用LLM
+            - 安全政策和法规分析
+            - 隐私保护技术（明确用于安全场景）
           keywords:
-            - "cybersecurity education"
+            - "security education"
             - "security operations"
-            - "compliance checking"
-            - "risk assessment"
-            - "security visualization"
-            - "incident response"
-            - "security automation"
+            - "security compliance"
+            - "security risk assessment"
             - "digital forensics"
+            - "security incident response"
+            - "security automation"
+            - "security visualization"
+            - "privacy protection"
+            - "security policy"
+            - "security governance"
           examples:
-            - "网络安全教育平台"
-            - "安全运维自动化"
-            - "数字取证分析"
+            - "安全教育平台基于LLM"
+            - "安全运维自动化使用GPT"
+            - "数字取证分析基于LLM"
 
     rq3:
       name: "RQ3: What are further research directions about the application of LLMs in cybersecurity?"
@@ -316,25 +400,54 @@ confidence_thresholds:
 
 # 特殊情况处理规则
 special_rules:
-  # 如果标题或摘要中包含这些关键词，优先考虑对应分类
-  priority_keywords:
-    "benchmark": "Cybersecurity Evaluation Benchmarks"
-    "dataset": "Cybersecurity Evaluation Benchmarks"
-    "fine-tun": "Fine-tuned Domain LLMs for Cybersecurity"
-    "training": "Fine-tuned Domain LLMs for Cybersecurity"
-    "threat intelligence": "Threat Intelligence"
-    "fuzzing": "FUZZ"
-    "vulnerability detection": "Vulnerabilities Detection"
-    "program repair": "Program Repair"
-    "anomaly detection": "Anomaly Detection"
-    "penetration testing": "LLM Assisted Attack"
-    "agent": "Further Research: Agent4Cybersecurity"
+  # 强制排除的关键词组合 - 如果论文主要包含这些内容且不涉及安全，直接拒绝
+  rejection_keywords:
+    - ["recommendation system"] # 推荐系统（除非明确安全应用）
+    - ["healthcare", "medical"] # 医疗健康领域（除非明确安全问题）
+    - ["finance", "trading"] # 金融交易领域（除非明确安全问题）
+    - ["autonomous driving"] # 自动驾驶（除非明确安全问题）
+    - ["robotics"] # 机器人技术（除非明确安全问题）
+    - ["education", "learning"] # 教育学习（除非明确安全教育）
+    - ["translation", "summarization"] # 翻译摘要等NLP任务
   
-  # 排除关键词 - 如果包含这些词，不太可能属于对应分类
-  exclusion_keywords:
-    "Cybersecurity Evaluation Benchmarks": ["repair", "attack", "exploit"]
-    "FUZZ": ["repair", "intelligence", "education"]
-    "Threat Intelligence": ["fuzzing", "repair", "benchmark"]
+  # 如果标题或摘要中包含这些关键词，优先考虑对应分类（但仍需满足严格标准）
+  priority_keywords:
+    "security benchmark": "Cybersecurity Evaluation Benchmarks"
+    "security dataset": "Cybersecurity Evaluation Benchmarks"
+    "security fine-tun": "Fine-tuned Domain LLMs for Cybersecurity"
+    "security model training": "Fine-tuned Domain LLMs for Cybersecurity"
+    "threat intelligence": "Threat Intelligence"
+    "malware analysis": "Threat Intelligence"
+    "binary analysis": "Threat Intelligence"
+    "reverse engineering": "Threat Intelligence"
+    "security fuzzing": "FUZZ"
+    "vulnerability fuzzing": "FUZZ"
+    "security vulnerability": "Vulnerabilities Detection"
+    "code security": "Vulnerabilities Detection"
+    "binary security": "Vulnerabilities Detection"
+    "web security": "Vulnerabilities Detection"
+    "security repair": "Program Repair"
+    "vulnerability repair": "Program Repair"
+    "security anomaly": "Anomaly Detection"
+    "intrusion detection": "Anomaly Detection"
+    "security monitoring": "Anomaly Detection"
+    "penetration testing": "LLM Assisted Attack"
+    "security attack": "LLM Assisted Attack"
+    "adversarial attack": "LLM Assisted Attack"
+    "security agent": "Further Research: Agent4Cybersecurity"
+  
+  # 必须同时包含的关键词对 - 确保是真正的交叉领域研究
+  required_combinations:
+    - ["security", "LLM"]
+    - ["security", "large language model"]
+    - ["security", "GPT"]
+    - ["security", "language model"]
+    - ["security", "artificial intelligence"]
+    - ["security", "AI"]
+    - ["vulnerability", "language model"]
+    - ["malware", "LLM"]
+    - ["attack", "language model"]
+    - ["threat", "AI"]
 
 # 多语言支持
 language_specific_prompts:
